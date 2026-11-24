@@ -23,3 +23,8 @@ export interface Board {
 }
 
 export type BoardWithCount = Board & { taskCount: number };
+
+export interface DropTarget {
+  status: Status;
+  beforeId: string | null; // insert before this task, or null for the end of the column
+}

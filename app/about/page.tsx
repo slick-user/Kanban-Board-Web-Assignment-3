@@ -7,9 +7,9 @@ export const metadata: Metadata = {
 };
 
 const team = [
-  { name: "Azlan Ali Khan", role: "Layout, Navbar, Footer, Home, About" },
+  { name: "Talha Malik", role: "Layout, Navbar, Footer, Home, About" },
   { name: "Mudassir Mumtaz", role: "Boards listing, search and filter, dynamic routes" },
-  { name: "Talha Malik", role: "Kanban board, task form, new board form" },
+  { name: "Azlan Ali Khan", role: "Kanban board, task form, new board form" },
 ];
 
 export default function AboutPage() {
@@ -17,9 +17,9 @@ export default function AboutPage() {
     <div className="max-w-3xl space-y-8">
       <div className="flex items-center gap-4">
         <Image src="/logo.svg" alt="TaskFlow logo" width={56} height={56} />
-        <h1 className="text-3xl font-bold">About TaskFlow</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">About TaskFlow</h1>
       </div>
-      <p className="text-lg text-muted">
+      <p className="text-base text-muted sm:text-lg">
         TaskFlow is a frontend-only Kanban app built with Next.js, React, TypeScript and Tailwind CSS. All data is mock data kept in the project, and actions such as adding a task only change React state.
       </p>
       <section>

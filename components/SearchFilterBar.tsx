@@ -10,12 +10,12 @@ interface SearchFilterBarProps {
   categories: string[];
 }
 
-const field = "rounded-lg border border-line bg-white px-3 py-2 text-sm";
+const field = "min-h-10 rounded-lg border border-line bg-white px-3 py-2 text-base sm:text-sm";
 
 export default function SearchFilterBar({ query, onQueryChange, category, onCategoryChange, sort, onSortChange, categories }: SearchFilterBarProps) {
   return (
-    <div className="flex flex-col gap-3 sm:flex-row">
-      <div className="flex-1">
+    <div className="grid gap-3 sm:grid-cols-2 lg:flex lg:flex-row">
+      <div className="sm:col-span-2 lg:flex-1">
         <label htmlFor="search" className="sr-only">Search boards</label>
         <input
           id="search"

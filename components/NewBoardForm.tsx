@@ -10,7 +10,7 @@ interface Errors {
   category?: string;
 }
 
-const field = "w-full rounded-lg border border-line bg-white px-3 py-2 text-sm";
+const field = "min-h-10 w-full rounded-lg border border-line bg-white px-3 py-2 text-base sm:text-sm";
 
 export default function NewBoardForm() {
   const [name, setName] = useState("");
@@ -41,7 +41,7 @@ export default function NewBoardForm() {
       <div role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-6">
         <h2 className="text-lg font-bold">Board created</h2>
         <p className="mt-1 text-sm text-muted">&ldquo;{created}&rdquo; is ready. This demo does not save data, so it will not appear in the list.</p>
-        <div className="mt-4 flex gap-2">
+        <div className="mt-4 flex flex-wrap gap-2">
           <Button href="/boards">View boards</Button>
           <Button variant="secondary" onClick={startOver}>Create another</Button>
         </div>
@@ -52,7 +52,7 @@ export default function NewBoardForm() {
   const err = (msg?: string) => msg && <p className="mt-1 text-xs text-rose-700">{msg}</p>;
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-5 rounded-xl border border-line bg-white p-6">
+    <form onSubmit={handleSubmit} noValidate className="space-y-5 rounded-xl border border-line bg-white p-4 sm:p-6">
       <div>
         <label htmlFor="name" className="mb-1 block text-sm font-medium">Board name</label>
         <input id="name" className={field} value={name} onChange={(e) => setName(e.target.value)} aria-invalid={!!errors.name} />

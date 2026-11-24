@@ -19,7 +19,7 @@ interface Errors {
   priority?: string;
 }
 
-const field = "w-full rounded-lg border border-line px-3 py-2 text-sm";
+const field = "min-h-10 w-full rounded-lg border border-line px-3 py-2 text-base sm:text-sm";
 
 export default function AddTaskForm({ boardId, onAdd, onCancel }: AddTaskFormProps) {
   const [title, setTitle] = useState("");
@@ -97,7 +97,7 @@ export default function AddTaskForm({ boardId, onAdd, onCancel }: AddTaskFormPro
         <input id="dueDate" type="date" className={field} value={dueDate} onChange={(e) => setDueDate(e.target.value)} aria-invalid={!!errors.dueDate} />
         {err(errors.dueDate)}
       </div>
-      <div className="flex justify-end gap-2">
+      <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
         <Button type="button" variant="ghost" onClick={onCancel}>Cancel</Button>
         <Button type="submit">Add task</Button>
       </div>

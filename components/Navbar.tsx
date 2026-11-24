@@ -23,12 +23,12 @@ export default function Navbar() {
 
   const linkClass = (href: string) => {
     const active = href === "/" ? pathname === "/" : pathname === href || (href === "/boards" && pathname.startsWith("/boards") && pathname !== "/boards/new");
-    return `rounded-md px-3 py-2 text-sm font-medium ${active ? "bg-brand/10 text-brand-dark" : "text-ink hover:bg-ink/5"}`;
+    return `rounded-md px-3 py-2.5 text-sm font-medium md:py-2 ${active ? "bg-brand/10 text-brand-dark" : "text-ink hover:bg-ink/5"}`;
   };
 
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-center gap-2 text-lg font-bold">
           <Image src="/logo.svg" alt="" width={28} height={28} />
           TaskFlow
@@ -42,7 +42,7 @@ export default function Navbar() {
         </nav>
         <button
           type="button"
-          className="rounded-md border border-line px-3 py-1.5 text-sm font-medium md:hidden"
+          className="min-h-10 rounded-md border border-line px-4 text-sm font-medium md:hidden"
           aria-expanded={open}
           aria-controls="mobile-menu"
           onClick={() => setOpen((o) => !o)}
@@ -51,7 +51,7 @@ export default function Navbar() {
         </button>
       </div>
       {open && (
-        <nav id="mobile-menu" className="flex flex-col gap-1 border-t border-line px-4 py-3 md:hidden" aria-label="Mobile">
+        <nav id="mobile-menu" className="flex flex-col gap-1 border-t border-line px-4 py-3 sm:px-6 md:hidden" aria-label="Mobile">
           {links.map((l) => (
             <Link key={l.href} href={l.href} className={linkClass(l.href)} onClick={() => setOpen(false)}>
               {l.label}

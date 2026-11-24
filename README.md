@@ -2,14 +2,14 @@
 
 **CS4032 Web Programming, Assignment 3 (Fall 2026)**
 
-- **Group number:** G41
+- **Group number:** G__
 - **Topic:** Kanban task board (Productivity), topic no. __
 
-| Member          | Roll number |
-|-----------------|-------------|
-| Azlan Ali Khan  | 24I-2110    |
-| Mudassir Mumtaz | 24I-        |
-| Talha Malik     | 24I-        |
+| Member     | Roll number  |
+|------------|--------------|
+| Azlan Ali Khan | 24I-2110 |
+| Mudassir Mumtaz| 24I-0000 |
+| Talha Malik    | 24I-0000 |
 
 ## Description
 
@@ -32,7 +32,7 @@ Requires Node.js 20.9 or newer.
 | `/` | Hero, stats and featured boards |
 | `/boards` | All boards with search, category filter and sort |
 | `/boards/new` | Create-board form with validation and a confirmation |
-| `/boards/[id]` | Kanban board: columns, progress bar, add and move tasks (dynamic) |
+| `/boards/[id]` | Kanban board: drag cards between columns, expand cards, edit priority, right-click menu, add tasks (dynamic) |
 | `/boards/[id]/tasks/[taskId]` | Task detail (dynamic) |
 | `/about` | About the app and team |
 | any unknown URL or ID | `not-found.tsx` (404) |
@@ -52,7 +52,8 @@ public/         local SVG images used with next/image
 
 Client Components (`'use client'`) and why:
 
-- `KanbanBoard`: holds tasks in `useState`, handles move and add events.
+- `KanbanBoard`, `Column`, `BoardTaskCard`: task state, drag and drop, expandable cards, priority editing, right-click menu.
+- `ContextMenu`: outside-click, Escape and arrow-key handling.
 - `AddTaskForm`, `NewBoardForm`: controlled inputs, validation, submit handlers.
 - `BoardsExplorer`, `SearchFilterBar`: search, filter and sort state.
 - `Navbar`: mobile menu state and `usePathname` for the active link.
@@ -66,7 +67,7 @@ All pages are Server Components that read the mock data and pass it down as prop
 |---|---|---|
 | A | `/`, `/about`, `layout.tsx` | Navbar, Footer, Button, Badge, Avatar, StatCard |
 | B | `/boards`, `/boards/[id]/tasks/[taskId]`, `not-found.tsx`, `loading.tsx` | BoardCard, TaskCard, SearchFilterBar, BoardsExplorer, EmptyState |
-| C | `/boards/[id]`, `/boards/new` | KanbanBoard, Column, Modal, Toast, AddTaskForm, NewBoardForm |
+| C | `/boards/[id]`, `/boards/new` | KanbanBoard, Column, BoardTaskCard, ContextMenu, Modal, Toast, AddTaskForm, NewBoardForm |
 
 (Edit this table to match who really built what.)
 
@@ -78,4 +79,4 @@ All pages are Server Components that read the mock data and pass it down as prop
 
 ## AI tools used
 
-- Claude: Used to generate the starter project;
+- Claude: <describe what you used it for, e.g. generating the starter project; each member reviewed and can explain their own part>

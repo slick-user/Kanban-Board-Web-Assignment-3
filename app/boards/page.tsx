@@ -12,8 +12,8 @@ export default function BoardsPage() {
   const withCounts = boards.map((b) => ({ ...b, taskCount: getTasksForBoard(b.id).length }));
   return (
     <div className="space-y-6">
-      <div className="flex items-end justify-between gap-4">
-        <h1 className="text-3xl font-bold">Boards</h1>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <h1 className="text-2xl font-bold sm:text-3xl">Boards</h1>
         <Button href="/boards/new">New board</Button>
       </div>
       <BoardsExplorer boards={withCounts} categories={categories} />

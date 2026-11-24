@@ -28,17 +28,17 @@ export default async function TaskDetailPage({ params }: PageProps) {
 
   return (
     <div className="space-y-8">
-      <nav className="text-sm text-muted" aria-label="Breadcrumb">
+      <nav className="break-words text-sm text-muted" aria-label="Breadcrumb">
         <Link href="/boards" className="hover:text-brand">Boards</Link> / {" "}
         <Link href={`/boards/${board.id}`} className="hover:text-brand">{board.name}</Link> / {task.title}
       </nav>
 
-      <div className="max-w-2xl rounded-xl border border-line bg-white p-6">
+      <div className="max-w-2xl rounded-xl border border-line bg-white p-4 sm:p-6">
         <div className="flex flex-wrap items-center gap-2">
           <Badge label={STATUS_LABEL[task.status]} tone="brand" />
           <Badge label={`${task.priority} priority`} tone={task.priority} />
         </div>
-        <h1 className="mt-3 text-3xl font-bold">{task.title}</h1>
+        <h1 className="mt-3 break-words text-2xl font-bold sm:text-3xl">{task.title}</h1>
         <p className="mt-3 text-muted">{task.description}</p>
         <dl className="mt-6 grid gap-4 text-sm sm:grid-cols-2">
           <div>
@@ -60,7 +60,7 @@ export default async function TaskDetailPage({ params }: PageProps) {
       {others.length > 0 && (
         <section>
           <h2 className="mb-3 text-xl font-bold">Other tasks on this board</h2>
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {others.map((t) => (
               <TaskCard key={t.id} task={t} href={`/boards/${t.boardId}/tasks/${t.id}`} />
             ))}

@@ -15,11 +15,11 @@ export default function HomePage() {
   const sample = getTasksForBoard("b1");
 
   return (
-    <div className="space-y-14">
-      <section className="grid items-center gap-10 lg:grid-cols-2">
+    <div className="space-y-10 sm:space-y-14">
+      <section className="grid items-center gap-8 lg:grid-cols-2 lg:gap-10">
         <div>
-          <h1 className="text-4xl font-bold leading-tight sm:text-5xl">Move work from to do to done.</h1>
-          <p className="mt-4 max-w-lg text-lg text-muted">
+          <h1 className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">Move work from to do to done.</h1>
+          <p className="mt-4 max-w-lg text-base sm:text-lg text-muted">
             TaskFlow gives each project its own board with four columns. Add a task, push it right as it progresses, and watch the progress bar fill.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
@@ -27,7 +27,7 @@ export default function HomePage() {
             <Button href="/boards/new" variant="secondary">Create a board</Button>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-3 rounded-2xl border border-line bg-white p-4" aria-label="Board preview">
+        <div className="grid grid-cols-2 gap-2 rounded-2xl border border-line bg-white p-3 sm:gap-3 sm:p-4" aria-label="Board preview">
           {STATUSES.map((s) => (
             <div key={s.key} className="rounded-lg bg-paper p-2">
               <p className="mb-2 text-xs font-semibold">{s.label}</p>
@@ -44,14 +44,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-3" aria-label="Statistics">
+      <section className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-3" aria-label="Statistics">
         <StatCard label="Boards" value={boards.length} />
         <StatCard label="Tasks tracked" value={tasks.length} />
         <StatCard label="Tasks done" value={`${Math.round((doneCount / tasks.length) * 100)}%`} />
       </section>
 
       <section>
-        <div className="mb-5 flex items-center justify-between">
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-2xl font-bold">Featured boards</h2>
           <Button href="/boards" variant="ghost">See all boards</Button>
         </div>

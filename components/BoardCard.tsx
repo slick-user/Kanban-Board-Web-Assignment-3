@@ -25,7 +25,7 @@ export default function BoardCard({ board, taskCount, compact = false }: BoardCa
         />
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 className="font-semibold group-hover:text-brand">{board.name}</h3>
           <Badge label={board.category} tone="brand" />
         </div>
