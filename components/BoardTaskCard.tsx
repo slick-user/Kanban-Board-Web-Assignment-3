@@ -14,6 +14,7 @@ export interface TaskCardHandlers {
   onPriorityChange: (id: string, priority: Priority) => void;
   onStatusChange: (id: string, status: Status) => void;
   onContextMenu: (e: MouseEvent<HTMLElement>, id: string) => void;
+  onEdit: (id: string) => void;
 }
 
 interface BoardTaskCardProps extends TaskCardHandlers {
@@ -28,7 +29,7 @@ const dot: Record<Priority, string> = {
 };
 const PRIORITIES: Priority[] = ["low", "medium", "high"];
 
-export default function BoardTaskCard({ task, dragging, onDragStart, onDragEnd, onPriorityChange, onStatusChange, onContextMenu }: BoardTaskCardProps) {
+export default function BoardTaskCard({ task, dragging, onDragStart, onDragEnd, onPriorityChange, onStatusChange, onContextMenu, onEdit }: BoardTaskCardProps) {
   const [open, setOpen] = useState(false);
   const panelId = `panel-${task.id}`;
   const href = task.id.startsWith("new-") ? undefined : `/boards/${task.boardId}/tasks/${task.id}`;
@@ -114,11 +115,16 @@ export default function BoardTaskCard({ task, dragging, onDragStart, onDragEnd, 
               </div>
             )}
 
-            {href && (
-              <Link href={href} draggable={false} className="inline-block text-xs font-medium text-brand hover:underline">
-                Open task page
-              </Link>
-            )}
+            <div className="flex items-center gap-4">
+              <button type="button" onClick={() => onEdit(task.id)} className="text-xs font-medium text-brand hover:underline">
+                Edit task
+              </button>
+              {href && (
+                <Link href={href} draggable={false} className="text-xs font-medium text-brand hover:underline">
+                  Open task page
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </div>

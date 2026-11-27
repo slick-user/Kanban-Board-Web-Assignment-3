@@ -30,6 +30,7 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
   const router = useRouter();
   const [items, setItems] = useState<Task[]>(initialTasks);
   const [modalOpen, setModalOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [toast, setToast] = useState("");
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<DropTarget | null>(null);
@@ -84,6 +85,12 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
     setToast(`Added "${task.title}" to To do.`);
   };
 
+  const updateTask = (task: Task) => {
+    setItems((prev) => prev.map((t) => (t.id === task.id ? task : t)));
+    setEditingId(null);
+    setToast(`Saved "${task.title}".`);
+  };
+
   const clearDrag = () => {
     setDraggingId(null);
     setDropTarget(null);
@@ -111,6 +118,7 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
   };
 
   const closeModal = useCallback(() => setModalOpen(false), []);
+  const closeEdit = useCallback(() => setEditingId(null), []);
   const closeToast = useCallback(() => setToast(""), []);
   const closeMenu = useCallback(() => setMenu(null), []);
 
@@ -118,6 +126,7 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
     const isNew = task.id.startsWith("new-");
     const path = taskPath(task);
     return [
+      { type: "item", label: "Edit task", onSelect: () => setEditingId(task.id) },
       { type: "item", label: "Open task page", disabled: isNew, onSelect: () => router.push(path) },
       { type: "item", label: "Open in new tab", disabled: isNew, onSelect: () => window.open(path, "_blank", "noopener") },
       {
@@ -158,6 +167,7 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
     ];
   };
 
+  const editingTask = editingId ? items.find((t) => t.id === editingId) : undefined;
   const menuTask = menu ? items.find((t) => t.id === menu.taskId) : undefined;
   const done = items.filter((t) => t.status === "done").length;
   const percent = items.length === 0 ? 0 : Math.round((done / items.length) * 100);
@@ -169,6 +179,7 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
     onPriorityChange: changePriority,
     onStatusChange: changeStatus,
     onContextMenu: openMenu,
+    onEdit: (id: string) => setEditingId(id),
   };
 
   return (
@@ -226,6 +237,11 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
 
       <Modal open={modalOpen} title="Add a task" onClose={closeModal}>
         <AddTaskForm boardId={board.id} onAdd={addTask} onCancel={closeModal} />
+      </Modal>
+      <Modal open={editingTask !== undefined} title="Edit task" onClose={closeEdit}>
+        {editingTask && (
+          <AddTaskForm key={editingTask.id} boardId={board.id} initialTask={editingTask} onAdd={updateTask} onCancel={closeEdit} />
+        )}
       </Modal>
       {toast && <Toast message={toast} onClose={closeToast} />}
     </div>

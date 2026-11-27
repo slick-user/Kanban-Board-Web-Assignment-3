@@ -10,6 +10,8 @@ interface AddTaskFormProps {
   boardId: string;
   onAdd: (task: Task) => void;
   onCancel: () => void;
+  /** When given, the form edits this task instead of creating a new one */
+  initialTask?: Task;
 }
 
 interface Errors {
@@ -21,12 +23,13 @@ interface Errors {
 
 const field = "min-h-10 w-full rounded-lg border border-line px-3 py-2 text-base sm:text-sm";
 
-export default function AddTaskForm({ boardId, onAdd, onCancel }: AddTaskFormProps) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [assignee, setAssignee] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const [priority, setPriority] = useState<Priority | "">("");
+export default function AddTaskForm({ boardId, onAdd, onCancel, initialTask }: AddTaskFormProps) {
+  const editing = initialTask !== undefined;
+  const [title, setTitle] = useState(initialTask?.title ?? "");
+  const [description, setDescription] = useState(initialTask?.description ?? "");
+  const [assignee, setAssignee] = useState(initialTask?.assignee ?? "");
+  const [dueDate, setDueDate] = useState(initialTask?.dueDate ?? "");
+  const [priority, setPriority] = useState<Priority | "">(initialTask?.priority ?? "");
   const [errors, setErrors] = useState<Errors>({});
 
   const validate = (): Errors => {
@@ -34,7 +37,8 @@ export default function AddTaskForm({ boardId, onAdd, onCancel }: AddTaskFormPro
     if (title.trim().length < 3) e.title = "Enter a title with at least 3 characters.";
     if (!assignee) e.assignee = "Choose who will do this task.";
     if (!dueDate) e.dueDate = "Pick a due date.";
-    else if (dueDate < todayISO()) e.dueDate = "The due date cannot be in the past.";
+    // an existing task may already be overdue; only block a newly chosen past date
+    else if (dueDate < todayISO() && dueDate !== initialTask?.dueDate) e.dueDate = "The due date cannot be in the past.";
     if (!priority) e.priority = "Select a priority.";
     return e;
   };
@@ -44,17 +48,12 @@ export default function AddTaskForm({ boardId, onAdd, onCancel }: AddTaskFormPro
     const e = validate();
     setErrors(e);
     if (Object.keys(e).length > 0 || !priority) return;
-    onAdd({
-      id: `new-${Date.now()}`,
-      boardId,
-      title: title.trim(),
-      description: description.trim(),
-      status: "todo",
-      priority,
-      assignee,
-      dueDate,
-      tags: [],
-    });
+    const fields = { title: title.trim(), description: description.trim(), priority, assignee, dueDate };
+    onAdd(
+      initialTask
+        ? { ...initialTask, ...fields }
+        : { id: `new-${Date.now()}`, boardId, status: "todo", tags: [], ...fields }
+    );
   };
 
   const err = (msg?: string) => msg && <p className="mt-1 text-xs text-rose-700">{msg}</p>;
@@ -99,7 +98,7 @@ export default function AddTaskForm({ boardId, onAdd, onCancel }: AddTaskFormPro
       </div>
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
         <Button type="button" variant="ghost" onClick={onCancel}>Cancel</Button>
-        <Button type="submit">Add task</Button>
+        <Button type="submit">{editing ? "Save changes" : "Add task"}</Button>
       </div>
     </form>
   );
