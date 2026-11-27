@@ -31,6 +31,7 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
   const [items, setItems] = useState<Task[]>(initialTasks);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [toast, setToast] = useState("");
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<DropTarget | null>(null);
@@ -91,6 +92,15 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
     setToast(`Saved "${task.title}".`);
   };
 
+  // Fake action: the task is only removed from React state
+  const confirmDelete = () => {
+    const task = items.find((t) => t.id === deletingId);
+    if (!task) return;
+    setItems((prev) => prev.filter((t) => t.id !== task.id));
+    setDeletingId(null);
+    setToast(`Deleted "${task.title}".`);
+  };
+
   const clearDrag = () => {
     setDraggingId(null);
     setDropTarget(null);
@@ -119,6 +129,7 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
 
   const closeModal = useCallback(() => setModalOpen(false), []);
   const closeEdit = useCallback(() => setEditingId(null), []);
+  const closeDelete = useCallback(() => setDeletingId(null), []);
   const closeToast = useCallback(() => setToast(""), []);
   const closeMenu = useCallback(() => setMenu(null), []);
 
@@ -164,10 +175,13 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
         checked: task.status === s.key,
         onSelect: () => changeStatus(task.id, s.key),
       })),
+      { type: "separator" },
+      { type: "item", label: "Delete task", onSelect: () => setDeletingId(task.id) },
     ];
   };
 
   const editingTask = editingId ? items.find((t) => t.id === editingId) : undefined;
+  const deletingTask = deletingId ? items.find((t) => t.id === deletingId) : undefined;
   const menuTask = menu ? items.find((t) => t.id === menu.taskId) : undefined;
   const done = items.filter((t) => t.status === "done").length;
   const percent = items.length === 0 ? 0 : Math.round((done / items.length) * 100);
@@ -180,6 +194,7 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
     onStatusChange: changeStatus,
     onContextMenu: openMenu,
     onEdit: (id: string) => setEditingId(id),
+    onDelete: (id: string) => setDeletingId(id),
   };
 
   return (
@@ -242,6 +257,15 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
         {editingTask && (
           <AddTaskForm key={editingTask.id} boardId={board.id} initialTask={editingTask} onAdd={updateTask} onCancel={closeEdit} />
         )}
+      </Modal>
+      <Modal open={deletingTask !== undefined} title="Delete task?" onClose={closeDelete}>
+        <p className="text-sm text-muted">
+          &ldquo;{deletingTask?.title}&rdquo; will be removed from this board. This cannot be undone.
+        </p>
+        <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+          <Button variant="ghost" onClick={closeDelete}>Cancel</Button>
+          <Button variant="danger" onClick={confirmDelete}>Delete task</Button>
+        </div>
       </Modal>
       {toast && <Toast message={toast} onClose={closeToast} />}
     </div>

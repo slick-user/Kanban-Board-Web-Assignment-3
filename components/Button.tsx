@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "ghost" | "danger";
   href?: string;
   children: ReactNode;
 }
@@ -13,6 +13,7 @@ const variants = {
   primary: "bg-brand text-white hover:bg-brand-dark",
   secondary: "border border-line bg-white text-ink hover:border-brand hover:text-brand",
   ghost: "text-ink hover:bg-ink/5",
+  danger: "bg-rose-600 text-white hover:bg-rose-700",
 };
 
 export default function Button({ variant = "primary", href, children, className = "", ...rest }: ButtonProps) {

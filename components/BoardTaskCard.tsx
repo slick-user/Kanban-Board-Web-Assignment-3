@@ -15,6 +15,7 @@ export interface TaskCardHandlers {
   onStatusChange: (id: string, status: Status) => void;
   onContextMenu: (e: MouseEvent<HTMLElement>, id: string) => void;
   onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
 interface BoardTaskCardProps extends TaskCardHandlers {
@@ -29,7 +30,7 @@ const dot: Record<Priority, string> = {
 };
 const PRIORITIES: Priority[] = ["low", "medium", "high"];
 
-export default function BoardTaskCard({ task, dragging, onDragStart, onDragEnd, onPriorityChange, onStatusChange, onContextMenu, onEdit }: BoardTaskCardProps) {
+export default function BoardTaskCard({ task, dragging, onDragStart, onDragEnd, onPriorityChange, onStatusChange, onContextMenu, onEdit, onDelete }: BoardTaskCardProps) {
   const [open, setOpen] = useState(false);
   const panelId = `panel-${task.id}`;
   const href = task.id.startsWith("new-") ? undefined : `/boards/${task.boardId}/tasks/${task.id}`;
@@ -124,6 +125,9 @@ export default function BoardTaskCard({ task, dragging, onDragStart, onDragEnd, 
                   Open task page
                 </Link>
               )}
+              <button type="button" onClick={() => onDelete(task.id)} aria-label={`Delete ${task.title}`} className="ml-auto text-xs font-medium text-rose-700 hover:underline">
+                Delete
+              </button>
             </div>
           </div>
         </div>
