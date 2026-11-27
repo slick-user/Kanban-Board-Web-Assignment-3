@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useState, type MouseEvent } from "react";
+import { useCallback, useMemo, useState, type MouseEvent } from "react";
 import type { Board, DropTarget, Priority, Status, Task } from "@/types";
 import { STATUSES, STATUS_LABEL } from "@/data";
 import AddTaskForm from "./AddTaskForm";
@@ -9,6 +9,7 @@ import Button from "./Button";
 import Column from "./Column";
 import ContextMenu, { type MenuEntry } from "./ContextMenu";
 import Modal from "./Modal";
+import TaskFilterBar, { type PriorityFilter } from "./TaskFilterBar";
 import Toast from "./Toast";
 
 interface KanbanBoardProps {
@@ -33,6 +34,28 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<DropTarget | null>(null);
   const [menu, setMenu] = useState<MenuState | null>(null);
+  const [query, setQuery] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState<PriorityFilter>("all");
+  const [assigneeFilter, setAssigneeFilter] = useState("all");
+
+  // Only the cards shown change; the progress bar still counts every task on the board
+  const visibleTasks = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return items.filter(
+      (t) =>
+        (priorityFilter === "all" || t.priority === priorityFilter) &&
+        (assigneeFilter === "all" || t.assignee === assigneeFilter) &&
+        (q === "" || t.title.toLowerCase().includes(q) || t.tags.some((tag) => tag.toLowerCase().includes(q)))
+    );
+  }, [items, query, priorityFilter, assigneeFilter]);
+
+  const assignees = useMemo(() => [...new Set(items.map((t) => t.assignee))].sort(), [items]);
+
+  const clearFilters = () => {
+    setQuery("");
+    setPriorityFilter("all");
+    setAssigneeFilter("all");
+  };
 
   // Move a task to a column, optionally before another task (order = array order)
   const moveTask = (id: string, status: Status, beforeId: string | null = null) =>
@@ -170,13 +193,26 @@ export default function KanbanBoard({ board, initialTasks }: KanbanBoardProps) {
         </div>
       </div>
 
+      <TaskFilterBar
+        query={query}
+        onQueryChange={setQuery}
+        priority={priorityFilter}
+        onPriorityChange={setPriorityFilter}
+        assignee={assigneeFilter}
+        onAssigneeChange={setAssigneeFilter}
+        assignees={assignees}
+        shown={visibleTasks.length}
+        total={items.length}
+        onClear={clearFilters}
+      />
+
       <div className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3 sm:-mx-6 sm:px-6 md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 xl:grid-cols-4">
         {STATUSES.map((s) => (
           <Column
             key={s.key}
             status={s.key}
             title={s.label}
-            tasks={items.filter((t) => t.status === s.key)}
+            tasks={visibleTasks.filter((t) => t.status === s.key)}
             draggingId={draggingId}
             dropTarget={dropTarget}
             onDropTargetChange={setDropTarget}
