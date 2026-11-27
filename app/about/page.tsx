@@ -6,10 +6,16 @@ export const metadata: Metadata = {
   description: "About TaskFlow, the Kanban frontend built for CS4032 Web Programming Assignment 3.",
 };
 
-const team = [
-  { name: "Talha Malik", role: "Layout, Navbar, Footer, Home, About" },
-  { name: "Mudassir Mumtaz", role: "Boards listing, search and filter, dynamic routes" },
-  { name: "Azlan Ali Khan", role: "Kanban board, task form, new board form" },
+interface Member {
+  name: string;
+  roll: string;
+  role: string;
+}
+
+const team: Member[] = [
+  { name: "Azlan Ali Khan", roll: "24I-2110", role: "Initial app: layout, all routes, Kanban board, forms, mock data and responsive UI" },
+  { name: "Talha Malik", roll: "24I-2066", role: "Task filter bar, edit task, mobile overflow fix, Vercel deployment" },
+  { name: "Mudassir Mumtaz", roll: "24I-2021", role: "Favourite boards, delete task, typed Footer and form props, About page and README" },
 ];
 
 export default function AboutPage() {
@@ -28,11 +34,11 @@ export default function AboutPage() {
           {team.map((m) => (
             <li key={m.name} className="rounded-xl border border-line bg-white p-4">
               <p className="font-semibold">{m.name}</p>
+              <p className="text-xs text-muted">{m.roll}</p>
               <p className="mt-1 text-sm text-muted">{m.role}</p>
             </li>
           ))}
         </ul>
-        <p className="mt-3 text-sm text-muted">Replace the placeholders with your real names.</p>
       </section>
     </div>
   );
