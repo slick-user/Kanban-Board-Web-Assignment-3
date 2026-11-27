@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { categories as existing } from "@/data";
 import Button from "./Button";
 
 interface Errors {
@@ -10,9 +9,16 @@ interface Errors {
   category?: string;
 }
 
+interface NewBoardFormProps {
+  /** Category options for the select, passed in by the page */
+  categories: string[];
+  /** Shortest board name the form accepts */
+  minNameLength?: number;
+}
+
 const field = "min-h-10 w-full rounded-lg border border-line bg-white px-3 py-2 text-base sm:text-sm";
 
-export default function NewBoardForm() {
+export default function NewBoardForm({ categories, minNameLength = 3 }: NewBoardFormProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -22,7 +28,7 @@ export default function NewBoardForm() {
   const handleSubmit = (ev: FormEvent) => {
     ev.preventDefault();
     const e: Errors = {};
-    if (name.trim().length < 3) e.name = "Enter a board name with at least 3 characters.";
+    if (name.trim().length < minNameLength) e.name = `Enter a board name with at least ${minNameLength} characters.`;
     if (description.trim().length < 10) e.description = "Describe the board in at least 10 characters.";
     if (!category) e.category = "Choose a category.";
     setErrors(e);
@@ -67,7 +73,7 @@ export default function NewBoardForm() {
         <label htmlFor="cat" className="mb-1 block text-sm font-medium">Category</label>
         <select id="cat" className={field} value={category} onChange={(e) => setCategory(e.target.value)} aria-invalid={!!errors.category}>
           <option value="">Select a category</option>
-          {existing.map((c) => (
+          {categories.map((c) => (
             <option key={c} value={c}>{c}</option>
           ))}
         </select>
