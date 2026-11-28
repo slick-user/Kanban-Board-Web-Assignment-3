@@ -68,7 +68,7 @@ export default function BoardsExplorer({ boards, categories }: BoardsExplorerPro
           type="button"
           onClick={() => setFavouritesOnly((on) => !on)}
           aria-pressed={favouritesOnly}
-          className={`min-h-9 rounded-full border px-4 text-sm font-medium ${favouritesOnly ? "border-amber-400 bg-amber-50 text-ink" : "border-line bg-white text-muted hover:text-ink"}`}
+          className={`min-h-10 rounded-full border px-4 text-sm font-medium ${favouritesOnly ? "border-amber-400 bg-amber-50 text-ink" : "border-line bg-white text-muted hover:text-ink"}`}
         >
           ★ Favourites only ({favourites.size})
         </button>

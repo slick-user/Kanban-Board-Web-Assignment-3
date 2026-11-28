@@ -75,7 +75,7 @@ All pages are Server Components that read the mock data and pass it down as prop
 
 - Repository: https://github.com/slick-user/Kanban-Board-Web-Assignment-3
 - Video: <paste Google Drive or YouTube link, if not uploaded to the portal>
-- Vercel (bonus): <paste live link>
+- Vercel (bonus): https://kanban-board-web-assignment-3.vercel.app/
 
 ## AI tools used
 

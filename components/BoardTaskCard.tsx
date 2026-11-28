@@ -86,7 +86,7 @@ export default function BoardTaskCard({ task, dragging, onDragStart, onDragEnd, 
                     type="button"
                     aria-pressed={task.priority === p}
                     onClick={() => onPriorityChange(task.id, p)}
-                    className={`min-h-8 rounded-md px-3 text-xs font-medium capitalize ${task.priority === p ? "bg-white text-ink shadow-sm" : "text-muted hover:text-ink"}`}
+                    className={`min-h-10 rounded-md px-3 text-xs font-medium capitalize ${task.priority === p ? "bg-white text-ink shadow-sm" : "text-muted hover:text-ink"}`}
                   >
                     {p}
                   </button>
@@ -100,7 +100,7 @@ export default function BoardTaskCard({ task, dragging, onDragStart, onDragEnd, 
                 id={`status-${task.id}`}
                 value={task.status}
                 onChange={(e) => onStatusChange(task.id, e.target.value as Status)}
-                className="min-h-9 w-full rounded-lg border border-line bg-white px-2 text-base sm:text-sm"
+                className="min-h-10 w-full rounded-lg border border-line bg-white px-2 text-base sm:text-sm"
               >
                 {STATUSES.map((s) => (
                   <option key={s.key} value={s.key}>{s.label}</option>
@@ -116,16 +116,16 @@ export default function BoardTaskCard({ task, dragging, onDragStart, onDragEnd, 
               </div>
             )}
 
-            <div className="flex items-center gap-4">
-              <button type="button" onClick={() => onEdit(task.id)} className="text-xs font-medium text-brand hover:underline">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+              <button type="button" onClick={() => onEdit(task.id)} className="inline-flex min-h-10 items-center text-xs font-medium text-brand hover:underline">
                 Edit task
               </button>
               {href && (
-                <Link href={href} draggable={false} className="text-xs font-medium text-brand hover:underline">
+                <Link href={href} draggable={false} className="inline-flex min-h-10 items-center text-xs font-medium text-brand hover:underline">
                   Open task page
                 </Link>
               )}
-              <button type="button" onClick={() => onDelete(task.id)} aria-label={`Delete ${task.title}`} className="ml-auto text-xs font-medium text-rose-700 hover:underline">
+              <button type="button" onClick={() => onDelete(task.id)} aria-label={`Delete ${task.title}`} className="ml-auto inline-flex min-h-10 items-center text-xs font-medium text-rose-700 hover:underline">
                 Delete
               </button>
             </div>

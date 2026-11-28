@@ -17,7 +17,7 @@ export default function TaskCard({ task, href }: TaskCardProps) {
       <div className="flex items-start justify-between gap-2">
         <h4 className="min-w-0 break-words text-sm font-medium tracking-tight">
           {href ? (
-            <Link href={href} className="hover:text-brand">
+            <Link href={href} className="block min-h-10 py-1 hover:text-brand">
               {task.title}
             </Link>
           ) : (

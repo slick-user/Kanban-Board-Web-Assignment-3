@@ -74,7 +74,7 @@ export default function TaskFilterBar({
       <div className="flex items-center justify-between text-sm text-muted" aria-live="polite">
         <span>Showing {shown} of {total} tasks</span>
         {active && (
-          <button type="button" onClick={onClear} className="font-medium text-brand hover:underline">
+          <button type="button" onClick={onClear} className="inline-flex min-h-10 items-center font-medium text-brand hover:underline">
             Clear filters
           </button>
         )}

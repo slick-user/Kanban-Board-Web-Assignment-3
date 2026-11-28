@@ -9,7 +9,7 @@ export default function Avatar({ name, size = "sm" }: AvatarProps) {
     .map((p) => p[0])
     .join("")
     .slice(0, 2);
-  const dim = size === "sm" ? "h-6 w-6 text-[10px]" : "h-9 w-9 text-sm";
+  const dim = size === "sm" ? "h-6 w-6 text-[11px]" : "h-9 w-9 text-sm";
   return (
     <span
       title={name}

@@ -17,7 +17,7 @@ export default function Footer({ tagline, links }: FooterProps) {
         <p>{tagline}</p>
         <nav className="flex flex-wrap gap-x-5 gap-y-2" aria-label="Footer">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className="hover:text-brand">{l.label}</Link>
+            <Link key={l.href} href={l.href} className="inline-flex min-h-10 items-center hover:text-brand">{l.label}</Link>
           ))}
         </nav>
       </div>
